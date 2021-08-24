@@ -1,0 +1,1 @@
+/* Get and display 12 random users */
