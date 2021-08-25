@@ -4,6 +4,12 @@ fetch('https://randomuser.me/api/?results=12')
     .then((response) => response.json())
     /* pass data to function */
     .then(data => {
-        profileHTML(data.results);
-        clickModal(data.results);
+        generateProfile(data.results);
+        modalTemplate(data.results);
     })
+
+function generateProfile(data) {
+    data.map => {
+        
+    }
+}
