@@ -9,7 +9,9 @@ fetch('https://randomuser.me/api/?results=12')
     })
 
 function generateProfile(data) {
+    /* create new array populated by calling provided function */
     const profile = data.map(user => { 
+        /* template literal plus index.html file */
         `<div class="card">
         <div class="card-img-container">
             <img class="card-img" src="${user.picture.large}" alt="profile picture">
@@ -20,7 +22,8 @@ function generateProfile(data) {
             <p class="card-text cap">${user.location.city}, ${user.location.state}</p>
             </div>
         </div>`; 
-
+    
+    /* parses text as HTML and specifies position */
     const gallery = document.getElementById('gallery');
     gallery.insertAdjacentHTML('beforeend', profile);
     });
