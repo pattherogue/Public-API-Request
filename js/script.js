@@ -1,3 +1,5 @@
+const gallery = document.getElementById('gallery');
+
 /* Get and display 12 random users */
 fetch('https://randomuser.me/api/?results=12')
     /* data from Fetch API */
@@ -5,7 +7,7 @@ fetch('https://randomuser.me/api/?results=12')
     /* pass data to function */
     .then(data => {
         generateProfile(data.results);
-        modalTemplate(data.results);
+        modalTemplate();
     })
 
 function generateProfile(data) {
@@ -21,9 +23,9 @@ function generateProfile(data) {
             <p class="card-text">${user.email}</p>
             <p class="card-text cap">${user.location.city}, ${user.location.state}</p>
             </div>
-        </div>`; 
+        </div>`;
     
-    /* parses text as HTML and specifies position */
+    /* parse text as HTML and specifies position */
     gallery.insertAdjacentHTML('beforeend', profile);
     });
         
