@@ -24,7 +24,6 @@ function generateProfile(data) {
         </div>`; 
     
     /* parses text as HTML and specifies position */
-    const gallery = document.getElementById('gallery');
     gallery.insertAdjacentHTML('beforeend', profile);
     });
         
