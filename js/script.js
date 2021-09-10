@@ -1,9 +1,12 @@
 const gallery = document.getElementById('gallery');
+let directoryList = [];
 
 /* Get and display 12 random users */
 fetch('https://randomuser.me/api/?results=12')
     /* data from Fetch API */
     .then((response) => response.json())
+    /* organize data */
+    .then(information => directoryList = information)
     /* pass data to function */
     .then(data => {
         generateProfile(data.results);
@@ -32,15 +35,10 @@ function generateProfile(data) {
 }
 
 /* Create a modal window */
-function modalTemplate() {
-    const modal = 
-    `<div class="modal-container">
-    <div class="modal">
-    <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
-    </div>
-    </div>`;
-
-    gallery.insertAdjacentHTML('afterend', modal);
-    const modalContainer = document.querySelector('.modal-container');
-    modalContainer.style.display = 'none';
+function modalTemplate(index) {
+    let directory = directoryList.results[index];
+    const regexCell = /^\D*(\d{3})\D*(\d{3})\D*(\d{4})\D*$/
+    let formatCell = (directory.cell).replace(regexCell, '($1) $2-$3');
+    const regexDate = /(\d{4})-(\d{2})-(\d{2}).*/
+    let dateStructure = (directory.dob.date).replaced(regexDate, '$2/$3/$1')
 }
