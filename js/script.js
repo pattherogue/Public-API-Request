@@ -1,17 +1,19 @@
 const gallery = document.getElementById('gallery');
-let directoryList = [];
+const body = document.querySelector('body');
+
 
 /* Get and display 12 random users */
 fetch('https://randomuser.me/api/?results=12')
     /* data from Fetch API */
     .then((response) => response.json())
-    /* organize data */
-    .then(information => directoryList = information)
     /* pass data to function */
     .then(data => {
         generateProfile(data.results);
+
         modalTemplate();
-    })
+        modalOverlay(data.results);
+        closeModal();
+    });
 
 function generateProfile(data) {
     /* create new array populated by calling provided function */
@@ -26,7 +28,7 @@ function generateProfile(data) {
             <p class="card-text">${profile.email}</p>
             <p class="card-text cap">${profile.location.city}, ${profile.location.state}</p>
             </div>
-        </div>`).join(' ');
+        </div>`).join('');
     
     /* parse text as HTML and specifies position */
     gallery.insertAdjacentHTML('beforeend', html);
@@ -34,14 +36,21 @@ function generateProfile(data) {
         
 }
 
+/* Template of Modal */
+function modalTemplate() {
+    const modal = `<div class="modal-container">
+    <div class="modal">
+    <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+    </div>
+    </div>`;
+  
+    gallery.insertAdjacentHTML('afterend', modal);
+    const modalContainer = document.querySelector('.modal-container');
+    modalContainer.style.display = 'none';
+
 /* Create a modal window */
-function modalTemplate(data) {
-    let birthday = data.dob.date;
-    let name = data.name.first;
-    let email = data.email;
-    let year = birthday.slice(0, 4);
-    let month = birthday.slice(5, 7);
-    let day = birthday.slice(9, 10);
+function directoryModal(data) {
+   
 
     const modal = `
     <div class="modal-container">
@@ -53,13 +62,39 @@ function modalTemplate(data) {
           <p class="modal-text">${data.email}</p>
           <p class="modal-text cap">${data.location.city}</p>
           <hr>
-          <p class="modal-text">${data.cell}</p>
-          <p class="modal-text">${data.location.street.number} ${directory.location.street.name}, ${directory.location.city}, ${directory.location.state} ${directory.location.postcode}</p>
-          <p class="modal-text">Birthday: ${month} / ${day} / ${year}</p>
+          <p class="modal-text">(${data.cell.slice(0, 3)}) ${data.cell.slice(4, 7)}-${data.cell.slice(8, 12)}</p>
+          <p class="modal-text">${data.location.street.number} ${data.location.street.name}, ${data.location.city}, ${data.location.state} ${data.location.postcode}</p>
+          <p class="modal-text">Birthday: ${data.dob.date.slice(5, 7)}/${data.dob.date.slice(8, 10)}/${data.dob.date.slice(0, 4)}</p>
         </div>
       </div>
     </div>
     `;
 
+    body.insertAdjacentHTML('beforeend', modal);
+
     
 }
+
+function modalOverlay(data) {
+    const cards = document.querySelectorAll('.card');
+    for (let i = 0; i < cards.length; i++) {
+      cards[i].addEventListener('click', (e) => {
+        const modalContainer = document.querySelector('.modal-container');
+        directoryModal(data[i]);
+  
+        modalContainer.style.display = 'block';
+      });
+    }
+  }
+} 
+
+function closeModal() {
+    const modalClose = document.querySelector('#modal-close-btn');
+    modalClose.addEventListener('click', (e) => {
+      const modalContainer = document.querySelector('.modal-container');
+      modalContainer.style.display = 'none';
+      const modalInfoContainer = document.querySelector('.modal-info-container');
+      modalInfoContainer.remove();
+      console.log(modalInfoContainer);
+    });
+  }
