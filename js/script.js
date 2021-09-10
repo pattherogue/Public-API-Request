@@ -41,4 +41,22 @@ function modalTemplate(index) {
     let formatCell = (directory.cell).replace(regexCell, '($1) $2-$3');
     const regexDate = /(\d{4})-(\d{2})-(\d{2}).*/
     let dateStructure = (directory.dob.date).replaced(regexDate, '$2/$3/$1')
+
+    const modal = `
+    <div class="modal-container" data-index="${index}">
+      <div class="modal" style="padding-bottom: 0px">
+        <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+        <div class="modal-info-container" style="background: rgba(143, 119, 191, .8); height: 430px">
+          <img class="modal-img" src="${directory.picture.large}" alt="profile picture">
+          <h3 id="name" class="modal-name cap">${directory.name.first} ${directory.name.last}</h3>
+          <p class="modal-text">${directory.email}</p>
+          <p class="modal-text cap">${directory.location.city}</p>
+          <hr>
+          <p class="modal-text">${formatCell}</p>
+          <p class="modal-text">${direco.location.street.number} ${directory.location.street.name}, ${directory.location.city}, ${directory.location.state} ${directory.location.postcode}</p>
+          <p class="modal-text">Birthday: ${dateStructure}</p>
+        </div>
+      </div>
+    </div>
+    `;
 }
