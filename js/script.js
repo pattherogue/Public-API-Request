@@ -2,24 +2,23 @@ const gallery = document.getElementById('gallery');
 const body = document.querySelector('body');
 
 
-/* Get and display 12 random users */
+/* Fetch and display 12 random users */
 fetch('https://randomuser.me/api/?results=12')
     /* data from Fetch API */
-    .then((response) => response.json())
-    /* pass data to function */
-    .then(data => {
-        generateProfile(data.results);
+    .then(response => response.json())
+    .then(response => response.results)
+    .then(generateProfile)
 
-        modalTemplate();
-        modalOverlay(data.results);
-        closeModal();
-    });
-
+/* Takes data from fetch request and appends to gallery */
 function generateProfile(data) {
     /* create new array populated by calling provided function */
-    const html = data.map(profile => 
+    data.results.map((profile) => {
+        /* parse text as HTML and specifies position */
+      const card = document.createElement("div");
+      gallery.appendChild(card);
         /* template literal plus index.html file */
-        `<div class="card">
+      card.innerHTML = `
+        <div class="card">
         <div class="card-img-container">
             <img class="card-img" src="${profile.picture.large}" alt="profile picture">
             </div>
@@ -28,15 +27,14 @@ function generateProfile(data) {
             <p class="card-text">${profile.email}</p>
             <p class="card-text cap">${profile.location.city}, ${profile.location.state}</p>
             </div>
-        </div>`).join('');
-    
-    /* parse text as HTML and specifies position */
-    gallery.insertAdjacentHTML('beforeend', html);
- 
-        
-}
+        </div>
+        `;
+    });
+    modalTemplate();
+    return data;
+  }
 
-/* Template of Modal */
+/* Template of selected employee modal */
 function modalTemplate() {
     const modal = `<div class="modal-container">
     <div class="modal">
@@ -71,21 +69,19 @@ function directoryModal(data) {
     `;
 
     body.insertAdjacentHTML('beforeend', modal);
-
-    
 }
 
-function modalOverlay(data) {
-    const cards = document.querySelectorAll('.card');
-    for (let i = 0; i < cards.length; i++) {
-      cards[i].addEventListener('click', (e) => {
-        const modalContainer = document.querySelector('.modal-container');
-        directoryModal(data[i]);
-  
-        modalContainer.style.display = 'block';
+/* Toggle modal view */
+function modalView(data) {
+    const cardArray = document.querySelectorAll('.card');
+    for (let i = 0; i < cardArray.length; i++) {
+      cardArray[i].addEventListener('click', (e) => {
+        const wrapper = document.querySelector(".wrapper");
+        wrapper.style.display = "flex";
+        directoryModal(data.results[i]);
       });
     }
-  }
+    return data;
 } 
 
 function closeModal() {
