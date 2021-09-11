@@ -6,18 +6,20 @@ const body = document.querySelector('body');
 fetch('https://randomuser.me/api/?results=12')
     /* data from Fetch API */
     .then(response => response.json())
-    .then(response => response.results)
-    .then(generateProfile)
+    .then(response => response.data)
+    .then(generateProfile);
 
 /* Takes data from fetch request and appends to gallery */
 function generateProfile(data) {
     /* create new array populated by calling provided function */
-    data.results.map((profile) => {
+    for (let i = 0; i < data.results.length; i++){
+      let profile = data.results[i];
         /* parse text as HTML and specifies position */
-      const card = document.createElement("div");
+      let card = document.createElement("div");
+      card.className = 'card';
       gallery.appendChild(card);
         /* template literal plus index.html file */
-      card.innerHTML = `
+      card.insertAdjacentHTML('beforeend', `
         <div class="card">
         <div class="card-img-container">
             <img class="card-img" src="${profile.picture.large}" alt="profile picture">
@@ -28,28 +30,17 @@ function generateProfile(data) {
             <p class="card-text cap">${profile.location.city}, ${profile.location.state}</p>
             </div>
         </div>
-        `;
-    });
-    modalTemplate();
-    return data;
-  }
+        `);
 
-/* Template of selected employee modal */
-function modalTemplate() {
-    const modal = `<div class="modal-container">
-    <div class="modal">
-    <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
-    </div>
-    </div>`;
-  
-    gallery.insertAdjacentHTML('afterend', modal);
-    const modalContainer = document.querySelector('.modal-container');
-    modalContainer.style.display = 'none';
+        card.addEventListener('click', () => modalDisplay(data))
+    };
+}
 
-/* Create a modal window */
-function directoryModal(data) {
+
+
+/* Create a modal for selected employee */
+function modalDisplay(data) {
    
-
     const modal = `
     <div class="modal-container">
       <div class="modal" style="padding-bottom: 0px">
@@ -71,7 +62,7 @@ function directoryModal(data) {
     body.insertAdjacentHTML('beforeend', modal);
 }
 
-/* Toggle modal view */
+/* Toggle modal view
 function modalView(data) {
     const cardArray = document.querySelectorAll('.card');
     for (let i = 0; i < cardArray.length; i++) {
@@ -83,6 +74,8 @@ function modalView(data) {
     }
     return data;
 } 
+
+ */
 
 function closeModal() {
     const modalClose = document.querySelector('#modal-close-btn');
