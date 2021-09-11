@@ -6,8 +6,9 @@ const body = document.querySelector('body');
 fetch('https://randomuser.me/api/?results=12')
     /* data from Fetch API */
     .then(response => response.json())
-    .then(response => response.data)
-    .then(generateProfile);
+    .then(data => generateProfile(data))
+    .then(data => modalDisplay(data))
+ 
 
 /* Takes data from fetch request and appends to gallery */
 function generateProfile(data) {
@@ -30,7 +31,7 @@ function generateProfile(data) {
             <p class="card-text cap">${profile.location.city}, ${profile.location.state}</p>
             </div>
         </div>
-        `);
+        `).join(' ');
 
         card.addEventListener('click', () => modalDisplay(data))
     };
