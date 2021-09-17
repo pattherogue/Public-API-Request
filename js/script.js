@@ -34,8 +34,6 @@ function generateProfile(data) {
       });
 }
 
-
-
 /* Create a modal for selected employee */
 function modalDisplay(individualData) {
    
@@ -59,21 +57,21 @@ function modalDisplay(individualData) {
     gallery.insertAdjacentHTML('beforeend', modal);
 }
 
-const buttonClose = document.getElementById('modal-close-btn');
-const containerModal = document.querySelector('.modal-container');
-
-buttonClose.addEventListener('click', e => {
-  containerModal.style.modalDisplay = 'none';
-  containerModal.remove();
-  });
-
-
-
 function modalClick(modalData) {
-  const card = document.querySelector('.card');
+  const card = document.querySelectorAll('.card');
   for (let i = 0; i < card.length; i++) {
     card[i].addEventListener('click', e => {
-      generateProfile(modalData[i]);
+      modalDisplay(modalData[i]);
     });
   }
 }
+
+const closeModal = document.getElementById('modal-close-btn');
+const modalContainer = document.querySelector('.modal-container');
+
+
+closeModal.addEventListener('click', e => {
+  modalContainer.style.display = 'none';
+  modalContainer.remove();
+  });
+
