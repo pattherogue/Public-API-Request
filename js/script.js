@@ -47,7 +47,7 @@ function modalDisplay(individualData) {
           <p class="modal-text">${individualData.email}</p>
           <p class="modal-text cap">${individualData.location.city}</p>
           <hr>
-          <p class="modal-text">(${individualData.cell.slice(0, 3)}) ${individualData.cell.slice(4, 7)}-${individualData.cell.slice(8, 12)}</p>
+          <p class="modal-text">${individualData.phone}</p>
           <p class="modal-text">${individualData.location.street.number} ${individualData.location.street.name}, ${individualData.location.city}, ${individualData.location.state} ${individualData.location.postcode}</p>
           <p class="modal-text">Birthday: ${individualData.dob.date.slice(5, 7)}/${individualData.dob.date.slice(8, 10)}/${individualData.dob.date.slice(0, 4)}</p>
         </div>
@@ -66,12 +66,13 @@ function modalClick(modalData) {
   }
 }
 
-const closeModal = document.getElementById('modal-close-btn');
+const modalClose = document.getElementById('modal-close-btn');
 const modalContainer = document.querySelector('.modal-container');
 
 
-closeModal.addEventListener('click', e => {
+modalClose.addEventListener('click', e => {
   modalContainer.style.display = 'none';
   modalContainer.remove();
   });
+
 
