@@ -6,22 +6,19 @@ const body = document.querySelector('body');
 fetch('https://randomuser.me/api/?results=12')
     /* data from Fetch API */
     .then(response => response.json())
-    .then(data => generateProfile(data))
-    .then(data => modalDisplay(data))
+    .then(data => { 
+      generateProfile(data.results);
+      modalDisplay(data.results);
+    })
+
  
 
 /* Takes data from fetch request and appends to gallery */
 function generateProfile(data) {
     /* create new array populated by calling provided function */
-    for (let i = 0; i < data.results.length; i++){
-      let profile = data.results[i];
-        /* parse text as HTML and specifies position */
-      let card = document.createElement("div");
-      card.className = 'card';
-      gallery.appendChild(card);
-        /* template literal plus index.html file */
-      card.insertAdjacentHTML('beforeend', `
-        <div class="card">
+    data.map(profile => {
+      profile = 
+        `<div class="card">
         <div class="card-img-container">
             <img class="card-img" src="${profile.picture.large}" alt="profile picture">
             </div>
@@ -30,11 +27,10 @@ function generateProfile(data) {
             <p class="card-text">${profile.email}</p>
             <p class="card-text cap">${profile.location.city}, ${profile.location.state}</p>
             </div>
-        </div>
-        `).join(' ');
-
-        card.addEventListener('click', () => modalDisplay(data))
-    };
+        </div>`
+     
+        gallery.insertAdjacentHTML('beforeend', profile);
+      });
 }
 
 
@@ -57,34 +53,25 @@ function modalDisplay(data) {
           <p class="modal-text">Birthday: ${data.dob.date.slice(5, 7)}/${data.dob.date.slice(8, 10)}/${data.dob.date.slice(0, 4)}</p>
         </div>
       </div>
-    </div>
-    `;
+    </div>`;
 
-    body.insertAdjacentHTML('beforeend', modal);
+    gallery.insertAdjacentHTML('beforeend', modal);
 }
 
-/* Toggle modal view
-function modalView(data) {
-    const cardArray = document.querySelectorAll('.card');
-    for (let i = 0; i < cardArray.length; i++) {
-      cardArray[i].addEventListener('click', (e) => {
-        const wrapper = document.querySelector(".wrapper");
-        wrapper.style.display = "flex";
-        directoryModal(data.results[i]);
-      });
-    }
-    return data;
-} 
+const buttonClose = document.getElementById('modal-close-btn');
+const containerModal = doucment.querySelector('.modal-container');
 
- */
+buttonClose.addEventListener('click', e => {
+  containerModal.style.modalDisplay = 'none';
+  containerModal.remove();
+  });
 
-function closeModal() {
-    const modalClose = document.querySelector('#modal-close-btn');
-    modalClose.addEventListener('click', (e) => {
-      const modalContainer = document.querySelector('.modal-container');
-      modalContainer.style.display = 'none';
-      const modalInfoContainer = document.querySelector('.modal-info-container');
-      modalInfoContainer.remove();
-      console.log(modalInfoContainer);
-    });
+
+function modalClick(modalData) {
+  const card = document.querySelector('.card');
+  for (let i = 0; i < card.clientHeight; i++) {
+    card[i].addEventListener('click', e => {
+      htmlModal(modalData[i]);
+    })
   }
+}
