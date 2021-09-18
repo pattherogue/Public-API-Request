@@ -3,9 +3,10 @@ const gallery = document.getElementById('gallery');
 
 
 /* Fetch and display 12 random users */
-fetch('https://randomuser.me/api/?results=12')
+fetch('https://randomuser.me/api/?results=12&nat=us')
     /* data from Fetch API */
     .then(response => response.json())
+    /* add data to following functions */
     .then(data => { 
       generateProfile(data.results);
       modalClick(data.results);
@@ -55,7 +56,8 @@ function modalDisplay(individualData) {
     </div>`;
 
     gallery.insertAdjacentHTML('beforeend', modal);
-
+  
+    /* variables and event listener for closing modal*/
     const modalClose = document.getElementById('modal-close-btn');
     const modalContainer = document.querySelector('.modal-container');
 
@@ -66,7 +68,7 @@ function modalDisplay(individualData) {
 }
 
 
-
+/* generate modal boxes */
 function modalClick(modalData) {
   const card = document.querySelectorAll('.card');
   for (let i = 0; i < card.length; i++) {
