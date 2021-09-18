@@ -55,7 +55,17 @@ function modalDisplay(individualData) {
     </div>`;
 
     gallery.insertAdjacentHTML('beforeend', modal);
+
+    const modalClose = document.getElementById('modal-close-btn');
+    const modalContainer = document.querySelector('.modal-container');
+
+    modalClose.addEventListener('click', e => {
+      modalContainer.style.display = 'none';
+      modalContainer.remove();
+      });
 }
+
+
 
 function modalClick(modalData) {
   const card = document.querySelectorAll('.card');
@@ -66,13 +76,6 @@ function modalClick(modalData) {
   }
 }
 
-const modalClose = document.getElementById('modal-close-btn');
-const modalContainer = document.querySelector('.modal-container');
 
-
-modalClose.addEventListener('click', e => {
-  modalContainer.style.display = 'none';
-  modalContainer.remove();
-  });
 
 
